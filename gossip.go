@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"time"
 )
 
 var nodeCount int
@@ -20,6 +21,7 @@ type Node struct {
 func pushInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if node.infected {
+		rand.Seed(time.Now().UnixNano())
 		target := rand.Intn(nodeCount)
 		fmt.Printf("Node %d is being infected.\n", target)
 		*nodes[target].channel <- node.infected
@@ -47,6 +49,7 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 func pullInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if !node.infected {
+		rand.Seed(time.Now().UnixNano())
 		target := rand.Intn(nodeCount)
 		select {
 		case msg, ok := <-*nodes[target].channel:
