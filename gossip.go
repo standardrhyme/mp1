@@ -85,119 +85,133 @@ func clearChannel(wg *sync.WaitGroup, node *Node) {
 
 func main() {
 	isPushing = true
-	isPulling = true
+	isPulling = false
 	wg := &sync.WaitGroup{}
-	nodeCount = 10
-	nodes = make([]Node, nodeCount)
-	channels := make([]chan bool, nodeCount)
-	for i := 0; i < nodeCount; i++ {
-		channels[i] = make(chan bool, nodeCount)
-		nodes[i] = Node{false, &(channels[i])}
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	//Get the desired number of nodes from the user
+	fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
+	fmt.Scanf("%d", &nodeCount)
+	//If the user inputs 0, ask again.
+	for nodeCount == 0 {
+		fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
+		fmt.Scanf("%d", &nodeCount)
 	}
-	nodes[0].infected = true
-	roundCount = 0
-	//push
-	for isPushing && !isPulling {
-		roundCount++
+	//If the user quits the program.
+	if nodeCount != -1 {
+		nodes = make([]Node, nodeCount)
+		channels := make([]chan bool, nodeCount)
+		for i := 0; i < nodeCount; i++ {
+			channels[i] = make(chan bool, nodeCount)
+			nodes[i] = Node{false, &(channels[i])}
+		}
+		nodes[0].infected = true
+		roundCount = 0
+		//push
+		for isPushing && !isPulling {
+			roundCount++
+			fmt.Println("------------------------------------------------------")
+			fmt.Printf("Round %d:\n", roundCount)
+			fmt.Println("------------------------------------------------------")
+			fmt.Println("Initiating infection phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pushInfect(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Initiating update phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pushUpdate(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Completion check: ")
+			complete := true
+			for i := 0; i < nodeCount; i++ {
+				fmt.Printf("%d:%t\n", i, nodes[i].infected)
+				complete = nodes[i].infected && complete
+			}
+			if complete {
+				break
+			}
+		}
+		//pull
+		for isPulling && !isPushing {
+			roundCount++
+			fmt.Println("------------------------------------------------------")
+			fmt.Printf("Round %d:\n", roundCount)
+			fmt.Println("------------------------------------------------------")
+			fmt.Println("Initiating update phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pullUpdate(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Initiating infection phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pullInfect(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Completion check: ")
+			complete := true
+			for i := 0; i < nodeCount; i++ {
+				fmt.Printf("%d:%t\n", i, nodes[i].infected)
+				complete = nodes[i].infected && complete
+			}
+			if complete {
+				break
+			}
+		}
+		//push&pull
+		for isPulling && isPushing {
+			roundCount++
+			fmt.Println("------------------------------------------------------")
+			fmt.Printf("Round %d:\n", roundCount)
+			fmt.Println("------------------------------------------------------")
+			fmt.Println("Initiating push infection phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pushUpdate(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Initiating push update phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pushInfect(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Initiating pull update phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pullUpdate(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Initiating pull infection phase:")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go pullInfect(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Clearing all channels.")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go clearChannel(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Completion check: ")
+			complete := true
+			for i := 0; i < nodeCount; i++ {
+				fmt.Printf("%d:%t\n", i, nodes[i].infected)
+				complete = nodes[i].infected && complete
+			}
+			if complete {
+				break
+			}
+		}
 		fmt.Println("------------------------------------------------------")
-		fmt.Printf("Round %d:\n", roundCount)
-		fmt.Println("------------------------------------------------------")
-		fmt.Println("Initiating infection phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pushInfect(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Initiating update phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pushUpdate(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Completion check: ")
-		complete := true
-		for i := 0; i < nodeCount; i++ {
-			fmt.Printf("%d:%t\n", i, nodes[i].infected)
-			complete = nodes[i].infected && complete
-		}
-		if complete {
-			break
-		}
+		fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
+	} else {
+		fmt.Println("You have exited the program by entering '-1'. Thank you and goodbye!")
 	}
-	//pull
-	for isPulling && !isPushing {
-		roundCount++
-		fmt.Println("------------------------------------------------------")
-		fmt.Printf("Round %d:\n", roundCount)
-		fmt.Println("------------------------------------------------------")
-		fmt.Println("Initiating update phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pullUpdate(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Initiating infection phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pullInfect(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Completion check: ")
-		complete := true
-		for i := 0; i < nodeCount; i++ {
-			fmt.Printf("%d:%t\n", i, nodes[i].infected)
-			complete = nodes[i].infected && complete
-		}
-		if complete {
-			break
-		}
-	}
-	//push&pull
-	for isPulling && isPushing {
-		roundCount++
-		fmt.Println("------------------------------------------------------")
-		fmt.Printf("Round %d:\n", roundCount)
-		fmt.Println("------------------------------------------------------")
-		fmt.Println("Initiating push infection phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pushUpdate(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Initiating push update phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pushInfect(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Initiating pull update phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pullUpdate(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Initiating pull infection phase:")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go pullInfect(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Clearing all channels.")
-		for i := 0; i < nodeCount; i++ {
-			wg.Add(1)
-			go clearChannel(wg, &nodes[i])
-		}
-		wg.Wait()
-		fmt.Println("Completion check: ")
-		complete := true
-		for i := 0; i < nodeCount; i++ {
-			fmt.Printf("%d:%t\n", i, nodes[i].infected)
-			complete = nodes[i].infected && complete
-		}
-		if complete {
-			break
-		}
-	}
-	fmt.Println("------------------------------------------------------")
-	fmt.Printf("Well, it only took %d rounds to finish %d nodes.", roundCount, nodeCount)
+
 }
