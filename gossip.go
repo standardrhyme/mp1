@@ -93,7 +93,7 @@ func plot() {
 	var keys []int
 	var values []opts.ScatterData
 
-	for keyValue := 1; keyValue <= len(desirednodesresults); keyValue++ {
+	for keyValue := 1; keyValue < len(desirednodesresults); keyValue++ {
 		keys = append(keys, keyValue)
 		values = append(values, opts.ScatterData{Value: desirednodesresults[keyValue]})
 	}
@@ -128,8 +128,8 @@ func plot() {
 }
 
 func main() {
-	isPushing = true
-	isPulling = false
+	isPushing = false
+	isPulling = true
 	wg := &sync.WaitGroup{}
 	// fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	// //Get the desired number of nodes from the user
@@ -265,10 +265,6 @@ func main() {
 		}
 	}
 
-	fmt.Printf("\n\n\n")
-	fmt.Println("NODES --- ROUNDS")
-	for j := range desirednodesresults {
-		fmt.Printf(" %d    ---    %d \n", j, desirednodesresults[j])
-	}
+	plot()
 
 }
