@@ -41,9 +41,6 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 	default:
 		break
 	}
-	for len(*node.channel) > 0 {
-		<-*node.channel
-	}
 }
 
 func pullInfect(wg *sync.WaitGroup, node *Node) {
@@ -79,7 +76,8 @@ func pullUpdate(wg *sync.WaitGroup, node *Node) {
 func clearChannel(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	for len(*node.channel) > 0 {
-		<-*node.channel
+		b := <-*node.channel
+		node.infected = node.infected || b
 	}
 }
 
@@ -90,11 +88,17 @@ func main() {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	//Get the desired number of nodes from the user
 	fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
-	fmt.Scanf("%d", &nodeCount)
+	_, err := fmt.Scanf("%d", &nodeCount)
+	if err != nil {
+		panic(err)
+	}
 	//If the user inputs 0, ask again.
 	for nodeCount == 0 {
 		fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
-		fmt.Scanf("%d", &nodeCount)
+		_, err = fmt.Scanf("%d", &nodeCount)
+		if err != nil {
+			panic(err)
+		}
 	}
 	//If the user quits the program.
 	if nodeCount != -1 {
@@ -122,6 +126,12 @@ func main() {
 			for i := 0; i < nodeCount; i++ {
 				wg.Add(1)
 				go pushUpdate(wg, &nodes[i])
+			}
+			wg.Wait()
+			fmt.Println("Clearing all channels.")
+			for i := 0; i < nodeCount; i++ {
+				wg.Add(1)
+				go clearChannel(wg, &nodes[i])
 			}
 			wg.Wait()
 			fmt.Println("Completion check: ")
@@ -213,5 +223,4 @@ func main() {
 	} else {
 		fmt.Println("You have exited the program by entering '-1'. Thank you and goodbye!")
 	}
-
 }
