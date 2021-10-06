@@ -47,9 +47,6 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 	default:
 		break
 	}
-	for len(*node.channel) > 0 {
-		<-*node.channel
-	}
 }
 
 func pullInfect(wg *sync.WaitGroup, node *Node) {
@@ -85,7 +82,8 @@ func pullUpdate(wg *sync.WaitGroup, node *Node) {
 func clearChannel(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	for len(*node.channel) > 0 {
-		<-*node.channel
+		b := <-*node.channel
+		node.infected = node.infected || b
 	}
 }
 
@@ -128,8 +126,8 @@ func plot() {
 }
 
 func main() {
-	isPushing = false
-	isPulling = true
+	isPushing = true
+	isPulling = false
 	wg := &sync.WaitGroup{}
 	// fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	// //Get the desired number of nodes from the user
@@ -171,6 +169,12 @@ func main() {
 				for i := 0; i < nodeCount; i++ {
 					wg.Add(1)
 					go pushUpdate(wg, &nodes[i])
+				}
+				wg.Wait()
+				fmt.Println("Clearing all channels.")
+				for i := 0; i < nodeCount; i++ {
+					wg.Add(1)
+					go clearChannel(wg, &nodes[i])
 				}
 				wg.Wait()
 				fmt.Println("Completion check: ")
