@@ -1,4 +1,4 @@
-module github.com/go-echarts/go-echarts
+module mp1
 
 go 1.17
 require (
