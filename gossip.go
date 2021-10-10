@@ -200,11 +200,12 @@ func completionCheck() (bool, int) {
 func main() {
 	wg := &sync.WaitGroup{}
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-	fmt.Println("Welcome! Which method of gossip would you like to implement: Push (PSH), Pull (PLL), or Push/Pull Original(PPO) or Push/Pull Switch (PPS)? Please enter the 3 character code as indicated.")
+	fmt.Println("Welcome! Which method of gossip would you like to implement: Push (1), Pull (2), or Push/Pull Original (3) or Push/Pull Switch (4)? Please enter the number code as indicated.")
 	fmt.Scanf("%s", &mode)
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	fmt.Println("For up to how many nodes would you like to test the convergence speed?")
 	fmt.Scanf("%d", &desiredNodes)
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	fmt.Println("Would you like to print the details from each round: Yes(Y) or No(N)? ")
 	fmt.Scanf("%s", &print)
 	desirednodesresults = append(desirednodesresults, 0)
@@ -219,7 +220,7 @@ func main() {
 		nodes[0].infected = true
 		roundCount = 0
 		//push
-		for mode == "PSH" {
+		for mode == "1" {
 			roundCount++
 			if print == "Y" {
 				fmt.Println("------------------------------------------------------")
@@ -233,7 +234,7 @@ func main() {
 			}
 		}
 		//pull
-		for mode == "PLL" {
+		for mode == "2" {
 			roundCount++
 			if print == "Y" {
 				fmt.Println("------------------------------------------------------")
@@ -247,7 +248,7 @@ func main() {
 			}
 		}
 		//push&pull
-		for mode == "PPO" {
+		for mode == "3" {
 			roundCount++
 			if print == "Y" {
 				fmt.Println("------------------------------------------------------")
@@ -262,7 +263,7 @@ func main() {
 		}
 		//pull switch
 		switchToPull := false
-		for mode == "PPS" {
+		for mode == "4" {
 			roundCount++
 			if print == "Y" {
 				fmt.Println("------------------------------------------------------")
@@ -287,8 +288,12 @@ func main() {
 				}
 			}
 		}
-		fmt.Println("------------------------------------------------------")
-		fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
+		if print == "Y" {
+			fmt.Println("------------------------------------------------------")
+		}
+		if print == "Y" {
+			fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
+		}
 		desirednodesresults = append(desirednodesresults, roundCount)
 	}
 	Plot(mode)
