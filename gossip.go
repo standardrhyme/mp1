@@ -2,21 +2,21 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-echarts/go-echarts/v2/charts"
-	"github.com/go-echarts/go-echarts/v2/opts"
 	"math/rand"
-	"os"
 	"sync"
+	"time"
 )
 
 var nodeCount int
 var roundCount int
 var nodes []Node
+var mode string
 var isPulling bool
 var isPushing bool
 var pullSwitch bool
 var desiredNodes int
 var desirednodesresults []int
+var print string
 
 type Node struct {
 	infected bool
@@ -28,7 +28,9 @@ func pushInfect(wg *sync.WaitGroup, node *Node) {
 	if node.infected {
 		//rand.Seed(time.Now().UnixNano())
 		target := rand.Intn(nodeCount)
-		fmt.Printf("Node %d is being infected.\n", target)
+		if print == "Y" {
+			fmt.Printf("Node %d is being infected.\n", target)
+		}
 		*nodes[target].channel <- node.infected
 	}
 }
@@ -51,12 +53,14 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 func pullInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if !node.infected {
-		//rand.Seed(time.Now().UnixNano())
+		rand.Seed(time.Now().UnixNano())
 		target := rand.Intn(nodeCount)
 		select {
 		case msg, ok := <-*nodes[target].channel:
 			if ok {
-				fmt.Printf("A node is being infected by node %d. \n", target)
+				if print == "Y" {
+					fmt.Printf("A node is being infected by node %d. \n", target)
+				}
 				node.infected = msg
 			} else {
 				fmt.Println("Channel closed for some reason.")
@@ -87,19 +91,25 @@ func clearChannel(wg *sync.WaitGroup, node *Node) {
 }
 
 func push(wg *sync.WaitGroup) {
-	fmt.Println("Initiating infection phase:")
+	if print == "Y" {
+		fmt.Println("Initiating infection phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pushInfect(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Initiating update phase:")
+	if print == "Y" {
+		fmt.Println("Initiating update phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pushUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Clearing all channels.")
+	if print == "Y" {
+		fmt.Println("Clearing all channels.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go clearChannel(wg, &nodes[i])
@@ -108,13 +118,17 @@ func push(wg *sync.WaitGroup) {
 }
 
 func pull(wg *sync.WaitGroup) {
-	fmt.Println("Initiating update phase:")
+	if print == "Y" {
+		fmt.Println("Initiating update phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pullUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Initiating infection phase:")
+	if print == "Y" {
+		fmt.Println("Initiating infection phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pullInfect(wg, &nodes[i])
@@ -123,31 +137,41 @@ func pull(wg *sync.WaitGroup) {
 }
 
 func pushPull(wg *sync.WaitGroup) {
-	fmt.Println("Initiating push infection phase:")
+	if print == "Y" {
+		fmt.Println("Initiating push infection phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pushUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Initiating push update phase:")
+	if print == "Y" {
+		fmt.Println("Initiating push update phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pushInfect(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Initiating pull update phase:")
+	if print == "Y" {
+		fmt.Println("Initiating pull update phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pullUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Initiating pull infection phase:")
+	if print == "Y" {
+		fmt.Println("Initiating pull infection phase.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go pullInfect(wg, &nodes[i])
 	}
 	wg.Wait()
-	fmt.Println("Clearing all channels.")
+	if print == "Y" {
+		fmt.Println("Clearing all channels.")
+	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
 		go clearChannel(wg, &nodes[i])
@@ -157,10 +181,14 @@ func pushPull(wg *sync.WaitGroup) {
 
 func completionCheck() (bool, int) {
 	count := 0
-	fmt.Println("Completion check: ")
+	if print == "Y" {
+		fmt.Println("Completion check.")
+	}
 	complete := true
 	for i := 0; i < nodeCount; i++ {
-		fmt.Printf("%d:%t\n", i, nodes[i].infected)
+		if print == "Y" {
+			fmt.Printf("Node %d: %t\n", i, nodes[i].infected)
+		}
 		complete = nodes[i].infected && complete
 		if nodes[i].infected {
 			count++
@@ -169,148 +197,100 @@ func completionCheck() (bool, int) {
 	return complete, count
 }
 
-func plot() {
-	var keys []int
-	var values []opts.ScatterData
-
-	for keyValue := 1; keyValue < len(desirednodesresults); keyValue++ {
-		keys = append(keys, keyValue)
-		values = append(values, opts.ScatterData{Value: desirednodesresults[keyValue]})
-	}
-
-	scatter := charts.NewScatter()
-	scatter.SetGlobalOptions(
-		charts.WithTitleOpts(
-			opts.Title{
-				Title: "Nodes vs. Convergence Time",
-			},
-		),
-		charts.WithXAxisOpts(opts.XAxis{
-			Name: "# of Nodes",
-		}),
-		charts.WithYAxisOpts(opts.YAxis{
-			Name: "Conv. Time",
-		}),
-	)
-
-	// Put data into instance
-	scatter.SetXAxis(keys)
-	scatter.AddSeries("Category A", values)
-	scatter.SetSeriesOptions(charts.WithLabelOpts(
-		opts.Label{
-			Show:     true,
-			Position: "right",
-		}),
-	)
-	f, _ := os.Create("nodesvsconvergencetime.html")
-	err := scatter.Render(f)
-	if err != nil {
-		return
-	}
-
-}
-
 func main() {
-	isPushing = false
-	isPulling = false
-	pullSwitch = true
 	wg := &sync.WaitGroup{}
-	// fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-	// //Get the desired number of nodes from the user
-	// fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
-	// fmt.Scanf("%d", &nodeCount)
-	// //If the user inputs 0, ask again.
-	// for nodeCount == 0 {
-	// 	fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
-	// 	fmt.Scanf("%d", &nodeCount)
-	// }
-	fmt.Println("Up to how many nodes do you want to test?")
-	_, err := fmt.Scanf("%d", &desiredNodes)
-	if err != nil {
-		return
-	}
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	fmt.Println("Welcome! Which method of gossip would you like to implement: Push (PSH), Pull (PLL), or Push/Pull Original(PPO) or Push/Pull Switch (PPS)? Please enter the 3 character code as indicated.")
+	fmt.Scanf("%s", &mode)
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	fmt.Println("For up to how many nodes would you like to test the convergence speed?")
+	fmt.Scanf("%d", &desiredNodes)
+	fmt.Println("Would you like to print the details from each round: Yes(Y) or No(N)? ")
+	fmt.Scanf("%s", &print)
 	desirednodesresults = append(desirednodesresults, 0)
 	for i := 1; i <= desiredNodes; i++ {
 		nodeCount = i
-		//If the user quits the program.
-		if nodeCount != -1 {
-			nodes = make([]Node, nodeCount)
-			channels := make([]chan bool, nodeCount)
-			for i := 0; i < nodeCount; i++ {
-				channels[i] = make(chan bool, nodeCount)
-				nodes[i] = Node{false, &(channels[i])}
-			}
-			nodes[0].infected = true
-			roundCount = 0
-			//push
-			for isPushing && !isPulling {
-				roundCount++
+		nodes = make([]Node, nodeCount)
+		channels := make([]chan bool, nodeCount)
+		for i := 0; i < nodeCount; i++ {
+			channels[i] = make(chan bool, nodeCount)
+			nodes[i] = Node{false, &(channels[i])}
+		}
+		nodes[0].infected = true
+		roundCount = 0
+		//push
+		for mode == "PSH" {
+			roundCount++
+			if print == "Y" {
 				fmt.Println("------------------------------------------------------")
 				fmt.Printf("Round %d:\n", roundCount)
 				fmt.Println("------------------------------------------------------")
+			}
+			push(wg)
+			complete, _ := completionCheck()
+			if complete {
+				break
+			}
+		}
+		//pull
+		for mode == "PLL" {
+			roundCount++
+			if print == "Y" {
+				fmt.Println("------------------------------------------------------")
+				fmt.Printf("Round %d:\n", roundCount)
+				fmt.Println("------------------------------------------------------")
+			}
+			pull(wg)
+			complete, _ := completionCheck()
+			if complete {
+				break
+			}
+		}
+		//push&pull
+		for mode == "PPO" {
+			roundCount++
+			if print == "Y" {
+				fmt.Println("------------------------------------------------------")
+				fmt.Printf("Round %d:\n", roundCount)
+				fmt.Println("------------------------------------------------------")
+			}
+			pushPull(wg)
+			complete, _ := completionCheck()
+			if complete {
+				break
+			}
+		}
+		//pull switch
+		switchToPull := false
+		for mode == "PPS" {
+			roundCount++
+			if print == "Y" {
+				fmt.Println("------------------------------------------------------")
+				fmt.Printf("Round %d:\n", roundCount)
+				fmt.Println("------------------------------------------------------")
+			}
+			if !switchToPull {
 				push(wg)
-				complete, _ := completionCheck()
+				complete, completeCount := completionCheck()
 				if complete {
 					break
 				}
-			}
-			//pull
-			for isPulling && !isPushing {
-				roundCount++
-				fmt.Println("------------------------------------------------------")
-				fmt.Printf("Round %d:\n", roundCount)
-				fmt.Println("------------------------------------------------------")
+				if completeCount*2 >= nodeCount {
+					switchToPull = true
+					fmt.Println("Switching to pull gossip.")
+				}
+			} else {
 				pull(wg)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
 			}
-			//push&pull
-			for isPulling && isPushing {
-				roundCount++
-				fmt.Println("------------------------------------------------------")
-				fmt.Printf("Round %d:\n", roundCount)
-				fmt.Println("------------------------------------------------------")
-				pushPull(wg)
-				complete, _ := completionCheck()
-				if complete {
-					break
-				}
-			}
-			//pull switch
-			switchToPull := false
-			for pullSwitch && !isPulling && !isPushing {
-				roundCount++
-				fmt.Println("------------------------------------------------------")
-				fmt.Printf("Round %d:\n", roundCount)
-				fmt.Println("------------------------------------------------------")
-				if !switchToPull {
-					push(wg)
-					complete, completeCount := completionCheck()
-					if complete {
-						break
-					}
-					if completeCount*2 >= nodeCount {
-						switchToPull = true
-						fmt.Println("Switching to pull gossip.")
-					}
-				} else {
-					pull(wg)
-					complete, _ := completionCheck()
-					if complete {
-						break
-					}
-				}
-			}
-			fmt.Println("------------------------------------------------------")
-			fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
-			desirednodesresults = append(desirednodesresults, roundCount)
-		} else {
-			fmt.Println("You have exited the program by entering '-1'. Thank you and goodbye!")
 		}
+		fmt.Println("------------------------------------------------------")
+		fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
+		desirednodesresults = append(desirednodesresults, roundCount)
 	}
-
-	plot()
+	Plot(mode)
 
 }
