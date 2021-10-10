@@ -18,14 +18,16 @@ func Plot(mode string) {
 		values = append(values, opts.ScatterData{Value: desirednodesresults[keyValue]})
 	}
 
-	if mode == "PSH" {
+	if mode == "1" {
 		title = "Nodes vs. Convergence Time - Push Based Gossip"
-	} else if mode == "PLL" {
+	} else if mode == "2" {
 		title = "Nodes vs. Convergence Time - Pull Based Gossip"
-	} else if mode == "PPO" {
+	} else if mode == "3" {
 		title = "Nodes vs. Convergence Time - Push and Pull Original Based Gossip"
-	} else if mode == "PPS" {
+	} else if mode == "4" {
 		title = "Nodes vs. Convergence Time - Push and Pull Switch Based Gossip"
+	} else {
+		title = "Nodes vs. Convergence Time"
 	}
 
 	scatter := charts.NewScatter()
