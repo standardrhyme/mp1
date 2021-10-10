@@ -1,5 +1,6 @@
 # MP1
-MP1 is an implementation of three types of gossip protocols: push-based gossip, pull-based gossip, and push-pull-based gossip. 
+MP1 uses `Go-channels` and `Go-routines` to simulate three types of Gossip protocols in a synchronous network.
+It implements three types of gossip protocols: push-based gossip, pull-based gossip, and push-pull-based gossip. 
 Input is user-specified number of nodes in the system, and the output is the infection status of each node per round leading up to a fully infected network.
 
 ## How to Run
