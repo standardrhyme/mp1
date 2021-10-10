@@ -7,7 +7,9 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
 
-func Plot() {
+//Plot is a function that plots the results
+func Plot(mode string) {
+	var title string
 	var keys []int
 	var values []opts.ScatterData
 
@@ -16,11 +18,21 @@ func Plot() {
 		values = append(values, opts.ScatterData{Value: desirednodesresults[keyValue]})
 	}
 
+	if mode == "PSH" {
+		title = "Nodes vs. Convergence Time - Push Based Gossip"
+	} else if mode == "PLL" {
+		title = "Nodes vs. Convergence Time - Pull Based Gossip"
+	} else if mode == "PPO" {
+		title = "Nodes vs. Convergence Time - Push and Pull Original Based Gossip"
+	} else if mode == "PPS" {
+		title = "Nodes vs. Convergence Time - Push and Pull Switch Based Gossip"
+	}
+
 	scatter := charts.NewScatter()
 	scatter.SetGlobalOptions(
 		charts.WithTitleOpts(
 			opts.Title{
-				Title: "Nodes vs. Convergence Time",
+				Title: title,
 			},
 		),
 		charts.WithXAxisOpts(opts.XAxis{
