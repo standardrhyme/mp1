@@ -2,16 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-echarts/go-echarts/v2/charts"
-	"github.com/go-echarts/go-echarts/v2/opts"
 	"math/rand"
-	"os"
 	"sync"
+	"time"
 )
 
 var nodeCount int
 var roundCount int
 var nodes []Node
+var mode string
 var isPulling bool
 var isPushing bool
 var pullSwitch bool
@@ -51,7 +50,7 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 func pullInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if !node.infected {
-		//rand.Seed(time.Now().UnixNano())
+		rand.Seed(time.Now().UnixNano())
 		target := rand.Intn(nodeCount)
 		select {
 		case msg, ok := <-*nodes[target].channel:
@@ -169,66 +168,25 @@ func completionCheck() (bool, int) {
 	return complete, count
 }
 
-func plot() {
-	var keys []int
-	var values []opts.ScatterData
-
-	for keyValue := 1; keyValue < len(desirednodesresults); keyValue++ {
-		keys = append(keys, keyValue)
-		values = append(values, opts.ScatterData{Value: desirednodesresults[keyValue]})
-	}
-
-	scatter := charts.NewScatter()
-	scatter.SetGlobalOptions(
-		charts.WithTitleOpts(
-			opts.Title{
-				Title: "Nodes vs. Convergence Time",
-			},
-		),
-		charts.WithXAxisOpts(opts.XAxis{
-			Name: "# of Nodes",
-		}),
-		charts.WithYAxisOpts(opts.YAxis{
-			Name: "Conv. Time",
-		}),
-	)
-
-	// Put data into instance
-	scatter.SetXAxis(keys)
-	scatter.AddSeries("Category A", values)
-	scatter.SetSeriesOptions(charts.WithLabelOpts(
-		opts.Label{
-			Show:     true,
-			Position: "right",
-		}),
-	)
-	f, _ := os.Create("nodesvsconvergencetime.html")
-	err := scatter.Render(f)
-	if err != nil {
-		return
-	}
-
-}
-
 func main() {
-	isPushing = false
-	isPulling = false
-	pullSwitch = true
 	wg := &sync.WaitGroup{}
-	// fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-	// //Get the desired number of nodes from the user
-	// fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
-	// fmt.Scanf("%d", &nodeCount)
-	// //If the user inputs 0, ask again.
-	// for nodeCount == 0 {
-	// 	fmt.Println("How many nodes would you like the map to contain? To quit the program, enter '-1'.")
-	// 	fmt.Scanf("%d", &nodeCount)
-	// }
-	fmt.Println("Up to how many nodes do you want to test?")
-	_, err := fmt.Scanf("%d", &desiredNodes)
-	if err != nil {
-		return
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	fmt.Printf("Welcome! Which method of gossip would you like to implement: Push (PSH), Pull (PLL), or Push/Pull(PP)? ")
+	fmt.Scanf("%s", &mode)
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	fmt.Printf("For up to how many nodes would you like to test the convergence speed? ")
+	fmt.Scanf("%d", &desiredNodes)
+	if mode == "PSH" {
+		isPushing = true
+		isPulling = false
+	} else if mode == "PLL" {
+		isPushing = false
+		isPulling = true
+	} else {
+		isPushing = true
+		isPulling = true
 	}
+	fmt.Scanf("%d", &desiredNodes)
 	desirednodesresults = append(desirednodesresults, 0)
 	for i := 1; i <= desiredNodes; i++ {
 		nodeCount = i
@@ -311,6 +269,6 @@ func main() {
 		}
 	}
 
-	plot()
+	Plot()
 
 }
