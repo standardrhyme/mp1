@@ -1,12 +1,11 @@
-# mp1
-
+# MP1
 MP1 is an implementation of three types of gossip protocols: push-based gossip, pull-based gossip, and push-pull-based gossip. 
 Input is user-specified number of nodes in the system, and the output is the infection status of each node per round leading up to a fully infected network.
 
 ## How to Run
 
 ### Step 1: Clone Git Repository
-Clone the following git repository with `INSERT URL`.
+Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
 ### Step 2: Initialize gossip protocol 
 Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go`
