@@ -8,7 +8,7 @@ Input is user-specified number of nodes in the system, and the output is the inf
 Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
 ### Step 2: Initialize gossip protocol 
-Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go`
+Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go plot.go`
 
 ##### If an error of the following form is triggered:
 
