@@ -6,7 +6,7 @@ These types are push-based gossip, pull-based gossip, and push-pull-based gossip
 Input is user-specified number of nodes in the system, and the output is the infection status of each node per round leading up to a fully infected network.
 
 ## Implementations of Push-Pull Gossip
-
+Push Gossip (User Input Option 1) - To begin, each node will have a boolean false value as well as an associated channel. For example, node 1 will have an infected value of false and an associated channel 1. Rounds will then begin. Each node will run in its own goRoutine. PushInfect will begin, wherein each infected node sends a true value to the channel of a random node. 
 
 ## How to Run
 
@@ -16,7 +16,7 @@ Clone the following git repository with `git clone https://github.com/standardrh
 ### Step 2: Initialize gossip protocol 
 Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go plot.go`
 
-##### If an error of the following form is triggered:
+##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
 
 ##### If the error is not solved, install the following dependencies with the following: 
 
