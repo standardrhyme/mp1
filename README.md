@@ -44,9 +44,11 @@ If you wish to quit the program, enter `q` or `Q`.
 ## Workflows
 
 General Workflow
+
 <img src="https://user-images.githubusercontent.com/60116121/136716646-9d5d557a-5a53-4d59-b5c1-fec69e3b77aa.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136716646-9d5d557a-5a53-4d59-b5c1-fec69e3b77aa.png" width="50%" height="50%" />
 
 Push Gossip Overview
+
 <img src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" width="50%" height="50%" />
 
 Pull Gossip Overview
