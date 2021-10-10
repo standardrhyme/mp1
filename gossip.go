@@ -138,7 +138,7 @@ func pushPull(wg *sync.WaitGroup) {
 	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
-		go pushUpdate(wg, &nodes[i])
+		go pushInfect(wg, &nodes[i])
 	}
 	wg.Wait()
 	if print == "Y" || print == "y" {
@@ -146,7 +146,7 @@ func pushPull(wg *sync.WaitGroup) {
 	}
 	for i := 0; i < nodeCount; i++ {
 		wg.Add(1)
-		go pushInfect(wg, &nodes[i])
+		go pushUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
 	if print == "Y" || print == "y" {
