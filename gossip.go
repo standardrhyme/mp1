@@ -64,66 +64,62 @@ func getSettings() (int, string) {
 }
 
 func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGroup) (int, int) {
-	if mode != "q" && mode != "Q" {
-		desiredNodesResults = append(desiredNodesResults, 0)
+	desiredNodesResults = append(desiredNodesResults, 0)
 
-		for i := 1; i <= desiredNodes; i++ {
-			nodeCount = i
-			nodes = make([]Node, nodeCount)
-			channels := make([]chan bool, nodeCount)
-			for i := 0; i < nodeCount; i++ {
-				channels[i] = make(chan bool, nodeCount)
-				nodes[i] = Node{false, &(channels[i])}
-			}
-			nodes[0].infected = true
-			roundCount = 0
-
-			//push
-			for mode == "1" {
-				roundCount++
-				initiatePush(wg, print)
-				complete, _ := completionCheck()
-				if complete {
-					break
-				}
-			}
-			//pull
-			for mode == "2" {
-				roundCount++
-				initiatePull(wg, print)
-				complete, _ := completionCheck()
-				if complete {
-					break
-				}
-			}
-			//push&pull
-			for mode == "3" {
-				roundCount++
-				initiatePushPull(wg, print)
-				complete, _ := completionCheck()
-				if complete {
-					break
-				}
-			}
-			//pull switch
-			for mode == "4" {
-				switchToPull := false
-				roundCount++
-				complete := initiatePushPullSwitch(wg, print, switchToPull)
-				if complete {
-					break
-				}
-			}
-			//invalid mode input
-			// default:
-			//
-			// i = desiredNodes
+	for i := 1; i <= desiredNodes; i++ {
+		nodeCount = i
+		nodes = make([]Node, nodeCount)
+		channels := make([]chan bool, nodeCount)
+		for i := 0; i < nodeCount; i++ {
+			channels[i] = make(chan bool, nodeCount)
+			nodes[i] = Node{false, &(channels[i])}
 		}
-		desiredNodesResults = append(desiredNodesResults, roundCount)
-		return roundCount, nodeCount
-	} else {
+		nodes[0].infected = true
+		roundCount = 0
 
+		//push
+		for mode == "1" {
+			roundCount++
+			initiatePush(wg, print)
+			complete, _ := completionCheck()
+			if complete {
+				break
+			}
+		}
+		//pull
+		for mode == "2" {
+			roundCount++
+			initiatePull(wg, print)
+			complete, _ := completionCheck()
+			if complete {
+				break
+			}
+		}
+		//push&pull
+		for mode == "3" {
+			roundCount++
+			initiatePushPull(wg, print)
+			complete, _ := completionCheck()
+			if complete {
+				break
+			}
+		}
+		//pull switch
+		for mode == "4" {
+			switchToPull := false
+			roundCount++
+			complete := initiatePushPullSwitch(wg, print, switchToPull)
+			if complete {
+				break
+			}
+		}
+		//invalid mode input
+		// default:
+		//
+		// i = desiredNodes
 	}
+	desiredNodesResults = append(desiredNodesResults, roundCount)
+	return roundCount, nodeCount
 	return 0, 0
 }
 
