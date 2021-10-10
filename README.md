@@ -33,9 +33,9 @@ If you wish to quit the program, enter `q`.
 ## Custom Data Structures
 
 ## Exit Codes 
-- '0': Successful
-- '1': Incorrect command line input format
-- '2': External package function error
+- `0`: Successful
+- `1`: Incorrect command line input format
+- `2`: External package function error
 
 ## References 
-- The plotting function 'plot' is a modified version of sample code from [Go E-Charts Examples](https://github.com/go-echarts/examples/blob/master/examples/scatter.go "Go E-Charts Examples").
+- The plotting function `plot` is a modified version of sample code from [Go E-Charts Examples](https://github.com/go-echarts/examples/blob/master/examples/scatter.go "Go E-Charts Examples").
