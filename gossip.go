@@ -26,7 +26,7 @@ type Node struct {
 func pushInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if node.infected {
-		//rand.Seed(time.Now().UnixNano())
+		rand.Seed(time.Now().UnixNano())
 		target := rand.Intn(nodeCount)
 		if print == "Y" {
 			fmt.Printf("Node %d is being infected.\n", target)
@@ -278,7 +278,9 @@ func main() {
 				}
 				if completeCount*2 >= nodeCount {
 					switchToPull = true
-					fmt.Println("Switching to pull gossip.")
+					if print == "Y" {
+						fmt.Println("Switching to pull gossip.")
+					}
 				}
 			} else {
 				pull(wg)
@@ -297,5 +299,6 @@ func main() {
 		desirednodesresults = append(desirednodesresults, roundCount)
 	}
 	Plot(mode)
+	fmt.Println("\n To see the number of nodes vs number of rounds results, open 'nodesvsconvergencetime.html' from the current directory.")
 
 }
