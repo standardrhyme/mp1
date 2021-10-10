@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"sync"
-	"time"
 )
 
 var nodeCount int
@@ -12,70 +10,12 @@ var roundCount int
 var nodes []Node
 var mode string
 var desiredNodes int
-var desirednodesresults []int
+var desiredNodesResults []int
 var print string
 
 type Node struct {
 	infected bool
 	channel  *chan bool
-}
-
-func pushInfect(wg *sync.WaitGroup, node *Node) {
-	defer wg.Done()
-	if node.infected {
-		rand.Seed(time.Now().UnixNano())
-		target := rand.Intn(nodeCount)
-		if print == "Y" || print == "y" {
-			fmt.Printf("Node %d is being infected.\n", target)
-		}
-		*nodes[target].channel <- node.infected
-	}
-}
-
-func pushUpdate(wg *sync.WaitGroup, node *Node) {
-	defer wg.Done()
-	select {
-	case msg, ok := <-*node.channel:
-		if ok {
-			node.infected = msg
-		} else {
-			fmt.Println("Channel closed for some reason.")
-			break
-		}
-	default:
-		break
-	}
-}
-
-func pullInfect(wg *sync.WaitGroup, node *Node) {
-	defer wg.Done()
-	if !node.infected {
-		target := rand.Intn(nodeCount)
-		select {
-		case msg, ok := <-*nodes[target].channel:
-			if ok {
-				if print == "Y" || print == "y" {
-					fmt.Printf("A node is being infected by node %d. \n", target)
-				}
-				node.infected = msg
-			} else {
-				fmt.Println("Channel closed for some reason.")
-				break
-			}
-		default:
-			break
-
-		}
-	}
-}
-
-func pullUpdate(wg *sync.WaitGroup, node *Node) {
-	defer wg.Done()
-	if node.infected {
-		for len(*(*node).channel) < nodeCount {
-			*(*node).channel <- node.infected
-		}
-	}
 }
 
 func clearChannel(wg *sync.WaitGroup, node *Node) {
@@ -84,95 +24,6 @@ func clearChannel(wg *sync.WaitGroup, node *Node) {
 		b := <-*node.channel
 		node.infected = node.infected || b
 	}
-}
-
-func push(wg *sync.WaitGroup) {
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating infection phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pushInfect(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating update phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pushUpdate(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Clearing all channels.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go clearChannel(wg, &nodes[i])
-	}
-	wg.Wait()
-}
-
-func pull(wg *sync.WaitGroup) {
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating update phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pullUpdate(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating infection phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pullInfect(wg, &nodes[i])
-	}
-	wg.Wait()
-}
-
-func pushPull(wg *sync.WaitGroup) {
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating push infection phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pushInfect(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating push update phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pushUpdate(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating pull update phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pullUpdate(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Initiating pull infection phase.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go pullInfect(wg, &nodes[i])
-	}
-	wg.Wait()
-	if print == "Y" || print == "y" {
-		fmt.Println("Clearing all channels.")
-	}
-	for i := 0; i < nodeCount; i++ {
-		wg.Add(1)
-		go clearChannel(wg, &nodes[i])
-	}
-	wg.Wait()
 }
 
 func completionCheck() (bool, int) {
@@ -193,19 +44,29 @@ func completionCheck() (bool, int) {
 	return complete, count
 }
 
-func main() {
-	wg := &sync.WaitGroup{}
+func getAnalysis(roundCount int, nodeCount int) {
+	if print == "Y" || print == "y" {
+		fmt.Println("------------------------------------------------------")
+	}
+	if print == "Y" || print == "y" {
+		fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
+	}
+}
+
+func getSettings() (int, string) {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-	fmt.Println("Welcome! Which method of gossip would you like to implement: Push(1), Pull(2), or Push/Pull Original(3) or Push/Pull Switch(4)? Please enter the number code as indicated. If you would like to quit, please enter 'q'. ")
-	fmt.Scanf("%s", &mode)
+	fmt.Println("For up to how many nodes would you like to test the convergence speed?")
+	fmt.Scanf("%d", &desiredNodes)
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	fmt.Println("Would you like to print the details from each round: Yes(Y) or No(N)? ")
+	fmt.Scanf("%s", &print)
+	return desiredNodes, print
+}
+
+func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGroup) (int, int) {
 	if mode != "q" && mode != "Q" {
-		fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-		fmt.Println("For up to how many nodes would you like to test the convergence speed?")
-		fmt.Scanf("%d", &desiredNodes)
-		fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-		fmt.Println("Would you like to print the details from each round: Yes(Y) or No(N)? ")
-		fmt.Scanf("%s", &print)
-		desirednodesresults = append(desirednodesresults, 0)
+		desiredNodesResults = append(desiredNodesResults, 0)
+
 		for i := 1; i <= desiredNodes; i++ {
 			nodeCount = i
 			nodes = make([]Node, nodeCount)
@@ -216,88 +77,70 @@ func main() {
 			}
 			nodes[0].infected = true
 			roundCount = 0
+			switch {
 			//push
-			for mode == "1" {
+			case mode == "1":
 				roundCount++
-				if print == "Y" || print == "y" {
-					fmt.Println("------------------------------------------------------")
-					fmt.Printf("Round %d:\n", roundCount)
-					fmt.Println("------------------------------------------------------")
-				}
-				push(wg)
+				initiatePush(wg, print)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
-			}
+
 			//pull
-			for mode == "2" {
+			case mode == "2":
 				roundCount++
-				if print == "Y" || print == "y" {
-					fmt.Println("------------------------------------------------------")
-					fmt.Printf("Round %d:\n", roundCount)
-					fmt.Println("------------------------------------------------------")
-				}
-				pull(wg)
+				initiatePull(wg, print)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
-			}
+
 			//push&pull
-			for mode == "3" {
+			case mode == "3":
 				roundCount++
-				if print == "Y" || print == "y" {
-					fmt.Println("------------------------------------------------------")
-					fmt.Printf("Round %d:\n", roundCount)
-					fmt.Println("------------------------------------------------------")
-				}
-				pushPull(wg)
+				initiatePushPull(wg, print)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
-			}
+
 			//pull switch
-			switchToPull := false
-			for mode == "4" {
+			case mode == "4":
+				switchToPull := false
 				roundCount++
-				if print == "Y" || print == "y" {
-					fmt.Println("------------------------------------------------------")
-					fmt.Printf("Round %d:\n", roundCount)
-					fmt.Println("------------------------------------------------------")
+				complete := initiatePushPullSwitch(wg, print, switchToPull)
+				if complete {
+					break
 				}
-				if !switchToPull {
-					push(wg)
-					complete, completeCount := completionCheck()
-					if complete {
-						break
-					}
-					if completeCount*2 >= nodeCount {
-						switchToPull = true
-						if print == "Y" || print == "y" {
-							fmt.Println("Switching to pull gossip.")
-						}
-					}
-				} else {
-					pull(wg)
-					complete, _ := completionCheck()
-					if complete {
-						break
-					}
-				}
+			//invalid mode input
+			default:
+				fmt.Println("Invalid Mode: Please select a valid gossip protocol next time!")
+				i = desiredNodes
 			}
-			if print == "Y" || print == "y" {
-				fmt.Println("------------------------------------------------------")
-			}
-			if print == "Y" || print == "y" {
-				fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
-			}
-			desirednodesresults = append(desirednodesresults, roundCount)
 		}
-		Plot(mode)
-		fmt.Println("\nTo see the number of nodes vs number of rounds results, open 'nodesvsconvergencetime.html' from the current directory.")
+		desiredNodesResults = append(desiredNodesResults, roundCount)
+		return roundCount, nodeCount
 	} else {
 		fmt.Println("You have quit the program. Thank you and goodbye!")
+	}
+	return 0, 0
+}
+
+func getMode() string {
+	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
+	fmt.Println("Welcome! Which method of gossip would you like to implement: Push(1), Pull(2), or Push/Pull Original(3) or Push/Pull Switch(4)? Please enter the number code as indicated. If you would like to quit, please enter 'q'. ")
+	fmt.Scanf("%s", &mode)
+	return mode
+}
+
+func main() {
+	wg := &sync.WaitGroup{}
+	mode := getMode()
+	desiredNodes, print := getSettings()
+	roundCount, nodeCount := initiateGossip(mode, desiredNodes, print, wg)
+	if roundCount != 0 && nodeCount != 0 {
+		getAnalysis(roundCount, nodeCount)
+		Plot(mode)
 	}
 }

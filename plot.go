@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
@@ -13,9 +14,9 @@ func Plot(mode string) {
 	var keys []int
 	var values []opts.ScatterData
 
-	for keyValue := 1; keyValue < len(desirednodesresults); keyValue++ {
+	for keyValue := 1; keyValue < len(desiredNodesResults); keyValue++ {
 		keys = append(keys, keyValue)
-		values = append(values, opts.ScatterData{Value: desirednodesresults[keyValue]})
+		values = append(values, opts.ScatterData{Value: desiredNodesResults[keyValue]})
 	}
 
 	if mode == "1" {
@@ -60,4 +61,5 @@ func Plot(mode string) {
 		return
 	}
 
+	fmt.Println("\nTo see the number of nodes vs number of rounds results, open 'nodesvsconvergencetime.html' from the current directory.")
 }
