@@ -113,10 +113,6 @@ func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGr
 				break
 			}
 		}
-		//invalid mode input
-		// default:
-		//
-		// i = desiredNodes
 	}
 	desiredNodesResults = append(desiredNodesResults, roundCount)
 	return roundCount, nodeCount
