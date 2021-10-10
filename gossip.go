@@ -299,6 +299,6 @@ func main() {
 		desirednodesresults = append(desirednodesresults, roundCount)
 	}
 	Plot(mode)
-	fmt.Println("\n To see the number of nodes vs number of rounds results, open 'nodesvsconvergencetime.html' from the current directory.")
+	fmt.Println("\nTo see the number of nodes vs number of rounds results, open 'nodesvsconvergencetime.html' from the current directory.")
 
 }
