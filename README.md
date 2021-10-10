@@ -24,7 +24,7 @@ Push/Pull Switch gossip will begin the same as the other modes; with the initial
 Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
 ### Step 2: Initialize gossip protocol 
-Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run mp1`
+Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run mp1`.
 
 ##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
 
