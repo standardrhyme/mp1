@@ -116,7 +116,7 @@ func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGr
 			}
 			//invalid mode input
 			// default:
-			// fmt.Println("Invalid Mode: Please select a valid gossip protocol next time!")
+			//
 			// i = desiredNodes
 		}
 		desiredNodesResults = append(desiredNodesResults, roundCount)
@@ -127,20 +127,34 @@ func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGr
 	return 0, 0
 }
 
+func isInvalidMode(mode string) bool {
+	if mode != "1" && mode != "2" && mode != "3" && mode != "4" {
+		return true
+	}
+	return false
+}
+
 func getMode() string {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	fmt.Println("Welcome! Which method of gossip would you like to implement: Push(1), Pull(2), or Push/Pull Original(3) or Push/Pull Switch(4)? Please enter the number code as indicated. If you would like to quit, please enter 'q'. ")
 	fmt.Scanf("%s", &mode)
+	error := isInvalidMode(mode)
+	if error {
+		fmt.Println("Invalid Mode: Please select a valid gossip protocol next time!")
+		return "invalid"
+	}
 	return mode
 }
 
 func main() {
 	wg := &sync.WaitGroup{}
 	mode := getMode()
-	desiredNodes, print := getSettings()
-	roundCount, nodeCount := initiateGossip(mode, desiredNodes, print, wg)
-	if roundCount != 0 && nodeCount != 0 {
-		getAnalysis(roundCount, nodeCount)
-		Plot(mode)
+	if mode != "invalid" {
+		desiredNodes, print := getSettings()
+		roundCount, nodeCount := initiateGossip(mode, desiredNodes, print, wg)
+		if roundCount != 0 && nodeCount != 0 {
+			getAnalysis(roundCount, nodeCount)
+			Plot(mode)
+		}
 	}
 }
