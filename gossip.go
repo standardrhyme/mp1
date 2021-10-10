@@ -122,13 +122,13 @@ func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGr
 		desiredNodesResults = append(desiredNodesResults, roundCount)
 		return roundCount, nodeCount
 	} else {
-		fmt.Println("You have quit the program. Thank you and goodbye!")
+
 	}
 	return 0, 0
 }
 
 func isInvalidMode(mode string) bool {
-	if mode != "1" && mode != "2" && mode != "3" && mode != "4" {
+	if mode != "1" && mode != "2" && mode != "3" && mode != "4" && mode != "q" && mode != "Q" {
 		return true
 	}
 	return false
@@ -141,7 +141,10 @@ func getMode() string {
 	error := isInvalidMode(mode)
 	if error {
 		fmt.Println("Invalid Mode: Please select a valid gossip protocol next time!")
-		return "invalid"
+		return "QUIT"
+	} else if mode == "q" || mode == "Q" {
+		fmt.Println("You have quit the program. Thank you and goodbye!")
+		return "QUIT"
 	}
 	return mode
 }
@@ -149,7 +152,7 @@ func getMode() string {
 func main() {
 	wg := &sync.WaitGroup{}
 	mode := getMode()
-	if mode != "invalid" {
+	if mode != "QUIT" {
 		desiredNodes, print := getSettings()
 		roundCount, nodeCount := initiateGossip(mode, desiredNodes, print, wg)
 		if roundCount != 0 && nodeCount != 0 {
