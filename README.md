@@ -39,10 +39,13 @@ If you wish to quit the program, enter `q`.
 General Workflow
 
 Push Gossip Overview
+![Push](https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png)
 
 Pull Gossip Overview
+![Pull](https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png)
 
 Push-Pull Gossip Overview
+![Push-Pull](https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png)
 
 ## Custom Data Structures
 
