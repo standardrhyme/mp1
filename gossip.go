@@ -77,47 +77,47 @@ func initiateGossip(mode string, desiredNodes int, print string, wg *sync.WaitGr
 			}
 			nodes[0].infected = true
 			roundCount = 0
-			switch {
+
 			//push
-			case mode == "1":
+			for mode == "1" {
 				roundCount++
 				initiatePush(wg, print)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
-
+			}
 			//pull
-			case mode == "2":
+			for mode == "2" {
 				roundCount++
 				initiatePull(wg, print)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
-
+			}
 			//push&pull
-			case mode == "3":
+			for mode == "3" {
 				roundCount++
 				initiatePushPull(wg, print)
 				complete, _ := completionCheck()
 				if complete {
 					break
 				}
-
+			}
 			//pull switch
-			case mode == "4":
+			for mode == "4" {
 				switchToPull := false
 				roundCount++
 				complete := initiatePushPullSwitch(wg, print, switchToPull)
 				if complete {
 					break
 				}
-			//invalid mode input
-			default:
-				fmt.Println("Invalid Mode: Please select a valid gossip protocol next time!")
-				i = desiredNodes
 			}
+			//invalid mode input
+			// default:
+			// fmt.Println("Invalid Mode: Please select a valid gossip protocol next time!")
+			// i = desiredNodes
 		}
 		desiredNodesResults = append(desiredNodesResults, roundCount)
 		return roundCount, nodeCount
