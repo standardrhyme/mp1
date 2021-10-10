@@ -38,3 +38,4 @@ If you wish to quit the program, enter `q`.
 - '2': External package function error
 
 ## References 
+- The plotting function is a modified version of sample code from [Go E-Charts Examples](https://github.com/go-echarts/examples/blob/master/examples/scatter.go "Go E-Charts Examples").
