@@ -16,7 +16,7 @@ Clone the following git repository with `git clone https://github.com/standardrh
 ### Step 2: Initialize gossip protocol 
 Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go plot.go`
 
-##### If an error of the following form is triggered:
+##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
 
 ##### If the error is not solved, install the following dependencies with the following: 
 
