@@ -24,20 +24,17 @@ Push/Pull Switch gossip will begin the same as the other modes; with the initial
 Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
 ### Step 2: Initialize gossip protocol 
-Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go plot.go`
+Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run mp1`
 
 ##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
-
-##### If the error is not solved, install the following dependencies with the following: 
 
 ### Step 3: Interact with Command Line
 Enter an integer value of the number of nodes you want to infect.  
 Press ENTER to begin gossip protocol. 
 
-If you wish to quit the program, enter `q`.
+If you wish to quit the program, enter `q` or `Q`.
 
 ## Screenshots
-
 1. Command Line Interface - Valid User Input
 
 2. Command Line Interface - User Quit Program
@@ -47,9 +44,9 @@ If you wish to quit the program, enter `q`.
 ## Workflows
 
 General Workflow
+<img src="https://user-images.githubusercontent.com/60116121/136716646-9d5d557a-5a53-4d59-b5c1-fec69e3b77aa.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136716646-9d5d557a-5a53-4d59-b5c1-fec69e3b77aa.png" width="50%" height="50%" />
 
 Push Gossip Overview
-
 <img src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" width="50%" height="50%" />
 
 Pull Gossip Overview
