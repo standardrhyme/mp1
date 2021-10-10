@@ -3,17 +3,39 @@
 MP1 is an implementation of three types of gossip protocols: push-based gossip, pull-based gossip, and push-pull-based gossip. 
 Input is user-specified number of nodes in the system, and the output is the infection status of each node per round leading up to a fully infected network.
 
-# How to Run
+## How to Run
 
-# Screenshots
+### Step 1: Clone Git Repository
+Clone the following git repository with `INSERT URL`.
 
-# Workflows
+### Step 2: Initialize gossip protocol 
+Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run gossip.go`
 
-# Custom Data Structures
+##### If an error of the following form is triggered:
 
-# Exit Codes 
-'0': Successful
-'1': Incorrect command line input format
-'2': External package function error
+##### If the error is not solved, install the following dependencies with the following: 
 
-# References 
+### Step 3: Interact with Command Line
+Enter an integer value of the number of nodes you want to infect.  
+Press ENTER to begin gossip protocol. 
+
+If you wish to quit the program, enter `q`.
+
+## Screenshots
+
+1. Command Line Interface - Valid User Input
+
+2. Command Line Interface - User Quit Program
+
+3. Output
+
+## Workflows
+
+## Custom Data Structures
+
+## Exit Codes 
+- '0': Successful
+- '1': Incorrect command line input format
+- '2': External package function error
+
+## References 
