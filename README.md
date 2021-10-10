@@ -36,6 +36,14 @@ If you wish to quit the program, enter `q`.
 
 ## Workflows
 
+General Workflow
+
+Push Gossip Overview
+
+Pull Gossip Overview
+
+Push-Pull Gossip Overview
+
 ## Custom Data Structures
 
 ## Exit Codes 
