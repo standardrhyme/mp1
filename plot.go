@@ -61,5 +61,6 @@ func Plot(mode string) {
 		return
 	}
 
-	fmt.Println("\nTo see the number of nodes vs number of rounds results, open 'nodesvsconvergencetime.html' from the current directory.")
+	fmt.Println("\nTo see the number of nodes vs number of rounds results, " +
+		"open 'nodesvsconvergencetime.html' from the current directory.")
 }
