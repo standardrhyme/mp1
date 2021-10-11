@@ -50,15 +50,15 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 - `N`: No
 
 ## Screenshots
-### 1. Command Line Interface - Valid User Input
+### Command Line Interface - Valid User Input
 <img width="902" alt="Screen Shot 2021-10-11 at 11 03 26 AM" src="https://user-images.githubusercontent.com/60116121/136813285-c3236b87-dcef-45aa-9da1-50612ff464dd.png">
 
 
-### 2. Command Line Interface - User Quit Program
+### Command Line Interface - User Quit Program
 <img width="896" alt="Screen Shot 2021-10-11 at 11 03 53 AM" src="https://user-images.githubusercontent.com/60116121/136813355-52072136-fa0f-4470-8a55-ce4b30001527.png">
 
 
-### 3. Output
+### Output
 ##### If the user indicates they would like the round results to be printed.
 <img width="897" alt="Screen Shot 2021-10-11 at 11 05 13 AM" src="https://user-images.githubusercontent.com/60116121/136813557-a44f82aa-1062-4607-9e46-dec076cfc72a.png">
 
