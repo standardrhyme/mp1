@@ -22,7 +22,7 @@ func pullInfect(wg *sync.WaitGroup, node *Node) {
 		select {
 		case msg, ok := <-*nodes[target].channel:
 			if ok {
-				if print == "Y" || print == "y" {
+				if printResults == "Y" || printResults == "y" {
 					fmt.Printf("A node is being infected by node %d. \n", target)
 				}
 				node.infected = msg
@@ -47,7 +47,7 @@ func pullUpdate(wg *sync.WaitGroup, node *Node) {
 }
 
 func pull(wg *sync.WaitGroup) {
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating update phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -55,7 +55,7 @@ func pull(wg *sync.WaitGroup) {
 		go pullUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating infection phase.")
 	}
 	for i := 0; i < nodeCount; i++ {

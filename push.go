@@ -19,7 +19,7 @@ func pushInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if node.infected {
 		target := rand.Intn(nodeCount)
-		if print == "Y" || print == "y" {
+		if printResults == "Y" || printResults == "y" {
 			fmt.Printf("Node %d is being infected.\n", target)
 		}
 		*nodes[target].channel <- node.infected
@@ -42,7 +42,7 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 }
 
 func push(wg *sync.WaitGroup) {
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating infection phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -50,7 +50,7 @@ func push(wg *sync.WaitGroup) {
 		go pushInfect(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating update phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -58,7 +58,7 @@ func push(wg *sync.WaitGroup) {
 		go pushUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Clearing all channels.")
 	}
 	for i := 0; i < nodeCount; i++ {

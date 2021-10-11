@@ -43,7 +43,7 @@ func initiatePushPullSwitch(wg *sync.WaitGroup, print string, switchToPull bool)
 }
 
 func pushPull(wg *sync.WaitGroup) {
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating push infection phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -51,7 +51,7 @@ func pushPull(wg *sync.WaitGroup) {
 		go pushInfect(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating push update phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -59,7 +59,7 @@ func pushPull(wg *sync.WaitGroup) {
 		go pushUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating pull update phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -67,7 +67,7 @@ func pushPull(wg *sync.WaitGroup) {
 		go pullUpdate(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating pull infection phase.")
 	}
 	for i := 0; i < nodeCount; i++ {
@@ -75,7 +75,7 @@ func pushPull(wg *sync.WaitGroup) {
 		go pullInfect(wg, &nodes[i])
 	}
 	wg.Wait()
-	if print == "Y" || print == "y" {
+	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Clearing all channels.")
 	}
 	for i := 0; i < nodeCount; i++ {
