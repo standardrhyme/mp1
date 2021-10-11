@@ -6,6 +6,11 @@ import (
 	"sync"
 )
 
+/*
+	@input wg //A pointer to the wait group
+		   print //The user's choice of verbose output
+	initiatePush displays the current number of round and calls the function that runs the push gossip
+*/
 func initiatePush(wg *sync.WaitGroup, print string) {
 	if print == "Y" || print == "y" {
 		fmt.Println("------------------------------------------------------")
@@ -15,6 +20,11 @@ func initiatePush(wg *sync.WaitGroup, print string) {
 	push(wg)
 }
 
+/*
+	@input wg //A pointer to the wait group
+		   node //The node on which the action of push infection is to be performed
+	If the input node is infected, pushInfect chooses another node's channel and push the gossip
+*/
 func pushInfect(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	if node.infected {
@@ -26,6 +36,11 @@ func pushInfect(wg *sync.WaitGroup, node *Node) {
 	}
 }
 
+/*
+	@input wg //A pointer to the wait group
+		   node //The node on which the action of push infection is to be performed
+	If the input node is susceptible, pushUpdate checks its channel for any possible incoming gossip
+*/
 func pushUpdate(wg *sync.WaitGroup, node *Node) {
 	defer wg.Done()
 	select {
@@ -41,6 +56,11 @@ func pushUpdate(wg *sync.WaitGroup, node *Node) {
 	}
 }
 
+/*
+	@input wg //A pointer to the wait group
+	push constitutes one round of push gossip, where all nodes go through the infection phase and then the update phase
+	before clearing the channel
+*/
 func push(wg *sync.WaitGroup) {
 	if printResults == "Y" || printResults == "y" {
 		fmt.Println("Initiating infection phase.")
