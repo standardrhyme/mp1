@@ -69,7 +69,7 @@ Push-Pull Gossip Overview
 <img src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" width="50%" height="50%" />
 
 ## Custom Data Structures
-Node Struct ```go ```
+Node Struct in ```Go ```
 ```
 type Node struct {
   infected bool
