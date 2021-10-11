@@ -38,6 +38,10 @@ func getSettings() (int, string) {
 		fmt.Println("Invalid Node Number: Please input an integer value of number of nodes to test!")
 		return 0, ""
 	}
+	if desiredNodes <= 0 {
+		fmt.Println("Invalid Node Number: The number of nodes must be positive!")
+		return 0, ""
+	}
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
 	fmt.Println("Would you like to print the details from each round: Yes(Y) or No(N)? ")
 	_, err2 := fmt.Scanf("%s", &printResults)
