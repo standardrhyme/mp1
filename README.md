@@ -27,9 +27,11 @@ Push/Pull Switch Gossip will begin the same as the other modes; with the initial
 Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
 ### Step 2: Initialize Gossip Protocol
-Change the current directory into the recently cloned `mp1` folder. Start the Gossip protocol with `go run mp1`.
+Change the current directory into the recently cloned `mp1` folder. Start the Gossip protocol with `go run mp1`. 
 
 ##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
+
+##### If an error of the following form (cannot find package "mp1") is triggered, start the gossip protocol with `go run .`
 
 ### Step 3: Interact with Command Line
 A) Enter the Integer Code corresponding to the type of Gossip protocol you wish to implement, and press `ENTER`.
@@ -49,10 +51,21 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 
 ## Screenshots
 1. Command Line Interface - Valid User Input
+<img width="902" alt="Screen Shot 2021-10-11 at 11 03 26 AM" src="https://user-images.githubusercontent.com/60116121/136813285-c3236b87-dcef-45aa-9da1-50612ff464dd.png">
+
 
 2. Command Line Interface - User Quit Program
+<img width="896" alt="Screen Shot 2021-10-11 at 11 03 53 AM" src="https://user-images.githubusercontent.com/60116121/136813355-52072136-fa0f-4470-8a55-ce4b30001527.png">
+
 
 3. Output
+### If the user indicates they would like the round results to be printed.
+<img width="897" alt="Screen Shot 2021-10-11 at 11 05 13 AM" src="https://user-images.githubusercontent.com/60116121/136813557-a44f82aa-1062-4607-9e46-dec076cfc72a.png">
+
+
+### Nodes vs. Convergence Time Results 
+<img width="919" alt="Screen Shot 2021-10-11 at 11 06 11 AM" src="https://user-images.githubusercontent.com/60116121/136813708-5720c6a2-ef26-4670-a850-6a6c5e749710.png">
+
 
 ## Workflows
 
