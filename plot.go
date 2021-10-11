@@ -3,10 +3,53 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"syscall"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
+
+func IsWritable() (isWritable bool) {
+	ex, errone := os.Executable()
+	if errone != nil {
+		fmt.Println("Error identifying the path of the current directory.")
+		fmt.Println("This is used to write the results file to the current directory. Please adjust settings and try again.")
+	}
+	exPath := filepath.Dir(ex)
+
+	info, err := os.Stat(exPath)
+	if err != nil {
+		fmt.Println("Path to current directory doesn't exist.")
+		return false
+	}
+
+	err = nil
+	if !info.IsDir() {
+		fmt.Println("Path isn't a directory.")
+		return false
+	}
+
+	// Check if the user bit is enabled in file permission
+	if info.Mode().Perm()&(1<<(uint(7))) == 0 {
+		fmt.Println("Write permission bit is not set on this file for user. Please adjust settings and try again.")
+		return false
+	}
+
+	var stat syscall.Stat_t
+	if err = syscall.Stat(exPath, &stat); err != nil {
+		fmt.Println("Unable to get stat.")
+		return false
+	}
+
+	err = nil
+	if uint32(os.Geteuid()) != stat.Uid {
+		isWritable = false
+		fmt.Println("User doesn't have permission to write to this directory. Please adjust permissions and try again.")
+		return false
+	}
+	return true
+}
 
 //Plot is a function that plots the results
 func Plot(mode string) {
@@ -55,12 +98,18 @@ func Plot(mode string) {
 			Position: "right",
 		}),
 	)
-	f, _ := os.Create("nodesvsconvergencetime.html")
-	err := scatter.Render(f)
-	if err != nil {
-		return
+
+	if IsWritable() {
+		f, _ := os.Create("nodesvsconvergencetime.html")
+		err := scatter.Render(f)
+		if err != nil {
+			fmt.Println("The results file was not able to be created in the current directory.")
+			fmt.Println("Please try adjusting reading and writing permissions.")
+		}
+		fmt.Println("\nTo see the number of nodes vs number of rounds results, " +
+			"open 'nodesvsconvergencetime.html' from the current directory.")
+	} else {
+		fmt.Println("The current directory is not writeable. Please adjust permissions and try again.")
 	}
 
-	fmt.Println("\nTo see the number of nodes vs number of rounds results, " +
-		"open 'nodesvsconvergencetime.html' from the current directory.")
 }

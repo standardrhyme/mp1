@@ -7,8 +7,8 @@ import (
 // getMode receives the desired gossip method which the user wants
 func getMode() string {
 	fmt.Println("- - - - - - - - - - - - - - - - - - - - - - - - - - - - -")
-	fmt.Println("Welcome! Which method of gossip would you like to implement: \n" +
-		"Push(1), Pull(2), or Push/Pull Original(3) or Push/Pull Switch(4)? Please enter the number code as indicated.")
+	fmt.Println("Welcome! Which method of gossip would you like to implement: " +
+		"Push(1), Pull(2), or Push/Pull Original(3) or Push/Pull Switch(4)? \nPlease enter the number code as indicated.")
 	fmt.Println("If you would like to quit, please enter 'q'. ")
 	_, err := fmt.Scanf("%s", &mode)
 	if err != nil || isValidMode(mode) {
