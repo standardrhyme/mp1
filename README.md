@@ -23,16 +23,24 @@ Push/Pull Switch gossip will begin the same as the other modes; with the initial
 ### Step 1: Clone Git Repository
 Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
-### Step 2: Initialize gossip protocol 
-Change the current directory to be within the recently cloned folder. Start the gossip protocol with `go run mp1`.
+### Step 2: Initialize Gossip Protocol
+Change the current directory into the recently cloned `mp1` folder. Start the gossip protocol with `go run mp1`.
 
 ##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
 
 ### Step 3: Interact with Command Line
-Enter an integer value of the number of nodes you want to infect.  
-Press ENTER to begin gossip protocol. 
-
+A) Enter the Integer Code corresponding to the type of Gossip protocol you wish you implement, and press `ENTER`.
+ - `1`: Push
+ - `2`: Pull
+ - `3`: Push/Pull Original
+ - `4`: Push/Pull Switch
 If you wish to quit the program, enter `q` or `Q`.
+
+B) Next, enter an integer value of the number of nodes you want in your system, and press `ENTER`. 
+
+C) Lastly, enter whether wish to print out in your terminal the infection results of each Gossip round, and press `ENTER`.
+- `Y`: Yes
+- `N`: No
 
 ## Screenshots
 1. Command Line Interface - Valid User Input
