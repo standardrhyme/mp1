@@ -93,6 +93,7 @@ type Node struct {
   channel *chan bool
 }
 ```
+```
  import { Component } from '@angular/core';
   import { MovieService } from './services/movie.service';
 
@@ -105,7 +106,7 @@ type Node struct {
   export class AppComponent {
     title = 'app works!';
   }
-
+```
 ## Exit Codes 
 - `0`: Successful
 - `1`: Incorrect command line input format
