@@ -3,7 +3,6 @@ MP1 uses `Go-channels` and `Go-routines` to simulate three major types of Gossip
 These types are push-based Gossip, pull-based Gossip, and push-pull-based Gossip. Two types of push-pull-based gossip are presented, making for a total of four possible Gossip protocol options. 
 
 ## Input and Output 
-Input is user-specified number of nodes in the system, and the output is the infection status of each node per round leading up to a fully infected network.
 
 ## Specifications of Gossip Protocols
 
@@ -33,7 +32,7 @@ Change the current directory into the recently cloned `mp1` folder. Start the Go
 ##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
 
 ### Step 3: Interact with Command Line
-A) Enter the Integer Code corresponding to the type of Gossip protocol you wish you implement, and press `ENTER`.
+A) Enter the Integer Code corresponding to the type of Gossip protocol you wish to implement, and press `ENTER`.
  - `1`: Push
  - `2`: Pull
  - `3`: Push/Pull Original
