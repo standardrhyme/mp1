@@ -85,7 +85,7 @@ func Plot(mode string) {
 			Name: "# of Nodes",
 		}),
 		charts.WithYAxisOpts(opts.YAxis{
-			Name: "Conv. Time",
+			Name: "# of Rounds",
 		}),
 	)
 
@@ -108,6 +108,7 @@ func Plot(mode string) {
 		}
 		fmt.Println("\nTo see the number of nodes vs number of rounds results, " +
 			"open 'nodesvsconvergencetime.html' from the current directory.")
+		fmt.Println("(If the file does not exist in the current directory, check directory read and write permissions and try again.)")
 	} else {
 		fmt.Println("The current directory is not writeable. Please adjust permissions and try again.")
 	}
