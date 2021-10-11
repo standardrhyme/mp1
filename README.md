@@ -59,11 +59,11 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 
 
 3. Output
-### If the user indicates they would like the round results to be printed.
+##### If the user indicates they would like the round results to be printed.
 <img width="897" alt="Screen Shot 2021-10-11 at 11 05 13 AM" src="https://user-images.githubusercontent.com/60116121/136813557-a44f82aa-1062-4607-9e46-dec076cfc72a.png">
 
 
-### Nodes vs. Convergence Time Results 
+##### Nodes vs. Convergence Time Results 
 <img width="919" alt="Screen Shot 2021-10-11 at 11 06 11 AM" src="https://user-images.githubusercontent.com/60116121/136813708-5720c6a2-ef26-4670-a850-6a6c5e749710.png">
 
 
