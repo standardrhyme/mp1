@@ -2,7 +2,8 @@
 MP1 uses `Go-channels` and `Go-routines` to simulate three major types of Gossip protocols in a synchronous network.
 These types are push-based Gossip, pull-based Gossip, and push-pull-based Gossip. Two types of push-pull-based gossip are presented, making for a total of four possible Gossip protocol options. 
 
-## Input and Output 
+## Input and Output
+A user will specify which Gossip protocol they would like to see tested. Additionally, the user will provide a value for the maximum number of nodes in a system to test. Finally, the user will select whether they would like to see the results for each round printed (Y or N). If the user's current directory is writeable, an HTML file will be created. The HTML file will display a plot that plots the number of nodes tested in a system against the number of rounds it took to infect all the nodes in the system.
 
 ## Specifications of Gossip Protocols
 
@@ -23,17 +24,17 @@ Push/Pull Switch Gossip will begin the same as the other modes; with the initial
 
 ## How to Run
 
-### Step 1: Clone Git Repository
+#### Step 1: Clone Git Repository
 Clone the following git repository with `git clone https://github.com/standardrhyme/mp1`.
 
-### Step 2: Initialize Gossip Protocol
+#### Step 2: Initialize Gossip Protocol
 Change the current directory into the recently cloned `mp1` folder. Start the Gossip protocol with `go run mp1`. 
 
-##### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
+###### If an error of the following form (plot.go:7:2: cannot find package "github.com/go-echarts/go-echarts/v2/charts" in any of: /usr/local/Cellar/go/1.17/...) is triggered, run `export GO111MODULE=on`.
 
-##### If an error of the following form (cannot find package "mp1") is triggered, start the gossip protocol with `go run .`
+###### If an error of the following form (cannot find package "mp1") is triggered, start the gossip protocol with `go run .`
 
-### Step 3: Interact with Command Line
+#### Step 3: Interact with Command Line
 A) Enter the Integer Code corresponding to the type of Gossip protocol you wish to implement, and press `ENTER`.
  - `1`: Push
  - `2`: Pull
@@ -50,38 +51,38 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 - `N`: No
 
 ## Screenshots
-### Command Line Interface - Valid User Input
+#### Command Line Interface - Valid User Input
 <img width="902" alt="Screen Shot 2021-10-11 at 11 03 26 AM" src="https://user-images.githubusercontent.com/60116121/136813285-c3236b87-dcef-45aa-9da1-50612ff464dd.png">
 
 
-### Command Line Interface - User Quit Program
+#### Command Line Interface - User Quit Program
 <img width="896" alt="Screen Shot 2021-10-11 at 11 03 53 AM" src="https://user-images.githubusercontent.com/60116121/136813355-52072136-fa0f-4470-8a55-ce4b30001527.png">
 
 
-### Output
-##### If the user indicates they would like the round results to be printed.
+#### Output
+###### If the user indicates they would like the round results to be printed.
 <img width="897" alt="Screen Shot 2021-10-11 at 11 05 13 AM" src="https://user-images.githubusercontent.com/60116121/136813557-a44f82aa-1062-4607-9e46-dec076cfc72a.png">
 
 
-##### Nodes vs. Convergence Time Results 
+###### Nodes vs. Convergence Time Results 
 <img width="919" alt="Screen Shot 2021-10-11 at 11 06 11 AM" src="https://user-images.githubusercontent.com/60116121/136813708-5720c6a2-ef26-4670-a850-6a6c5e749710.png">
 
 
 ## Workflows
 
-### General Workflow
+#### General Workflow
 
 <img src="https://user-images.githubusercontent.com/60116121/137044276-0d4285f7-f7c0-49c3-a198-5fff84fdba81.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/137044276-0d4285f7-f7c0-49c3-a198-5fff84fdba81.png" width="100%" height="100%" />
 
-### Push Gossip Overview
+#### Push Gossip Overview
 
 <img src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" width="100%" height="100%" />
 
-### Pull Gossip Overview
+#### Pull Gossip Overview
 
 <img src="https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png" width="100%" height="100%" />
 
-### Push-Pull Gossip Overview
+#### Push-Pull Gossip Overview
 
 <img src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" width="100%" height="100%" />
 
