@@ -71,7 +71,7 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 
 ### General Workflow
 
-<img src="https://user-images.githubusercontent.com/60116121/136716646-9d5d557a-5a53-4d59-b5c1-fec69e3b77aa.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136716646-9d5d557a-5a53-4d59-b5c1-fec69e3b77aa.png" width="100%" height="100%" />
+<img src="https://user-images.githubusercontent.com/60116121/137041069-5aff90ea-525f-4824-8370-49a278c79084.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/137041069-5aff90ea-525f-4824-8370-49a278c79084.png" width="100%" height="100%" />
 
 ### Push Gossip Overview
 
