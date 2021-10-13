@@ -23,8 +23,8 @@ As in the `Push` protocol, each node runs three total `Go-routines` in lockstep.
 #### Push/Pull Gossip 
 `Push/Pull` combines the functions of `Push` and `Pull` protocols, as the name suggests. `PushInfect()` is called first in `Go-routines` for by each node, followed by `PushUpdate()`. Then, `PullUpdate()` and `PullInfect()` are called, completing the round. Each of them are executed in lockstep as in the previous protocols, and the outputs are created in the same manner.  
 
-#### Push/Pull Switch Gossip 
-*This version of `Push/Pull` is implemented as an extra feature of this MP. Its purpose is to demonstrate understanding of a more efficient variation of the original `Push/Pull` protocol.* 
+#### Push/Pull Switch Gossip* 
+*\*This version of `Push/Pull` is implemented as an extra feature of this MP. Its purpose is to demonstrate understanding of a more efficient variation of the original `Push/Pull` protocol.* 
 
 `Push/Pull Switch Gossip` is identical to `Push/Pull`, except that instead of executing both `Push` and `Pull` commands every round, it acknowledges the different phases of a general Gossip protocol, and implements the commands that are optimal to the current phase. More specifically, while the number of susceptible nodes is more than half the number of total nodes, the `Push` protocol is implemented. Conversely, while the number of susceptible nodes is less than half, the `Pull` protocol is implemented. 
 
