@@ -46,7 +46,6 @@ A) Enter the Integer Code corresponding to the type of Gossip protocol you wish 
 If you wish to quit the program, enter `q` or `Q`.
 
 B) Next, enter a postive integer value of the number of nodes you want your system to test, and press `ENTER`. 
-(For example, an input of 50 would test systems with 1 node, 2 nodes, 3 nodes...50 nodes).
 
 C) Lastly, enter whether you wish to print out in your terminal the infection results of each Gossip round, and press `ENTER`.
 - `Y`: Yes
