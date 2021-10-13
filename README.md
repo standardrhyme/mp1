@@ -1,16 +1,16 @@
 # MP1
 MP1 uses `Go-channels` and `Go-routines` to simulate three major types of Gossip protocols in a synchronous network.
-These types are push-based Gossip, pull-based Gossip, and push-pull-based Gossip. Two types of push-pull-based gossip are presented, making for a total of four possible Gossip protocol options. 
+These types are Push-based Gossip, Pull-based Gossip, and Push/Pull-based Gossip. Two types of Push/Pull-based Gossip are presented, making for a total of four possible Gossip protocol options. 
 
 ## Input and Output
-A user will specify which Gossip protocol they would like to see tested. Additionally, the user will provide a value for the maximum number of nodes in a system to test. Finally, the user will select whether they would like to see the results for each round printed (Y or N). 
+The user specifies which Gossip protocol they would like to see tested. Then, the user provides a value for the maximum number of nodes in a system to test. Finally, the user selects whether they would like to see the results for each round printed (Y or N). 
 
-Depending on the user's answer to the last question, the program will print the results of each infection round. Also, if the user's current directory is writeable, an HTML file will be output. The HTML file will display a plot with the number of nodes tested in a system against the number of rounds it took to infect all the nodes in that system.
+Depending on the user's answer to the last question, the program prints the results of each infection round. Also, if the user's current directory is writeable, an HTML file is output. The HTML file displays a plot with the number of nodes tested in a system against the number of rounds it took to infect all the nodes in that system.
 
 ## Specifications of Gossip Protocols
 
 #### Initialization of Nodes
-Once the user inputs the type of Gossip protocol to run, the number of nodes to test until, and whether to print the round results in the terminal, a call to `initiateGossip()` is made. To begin, a variable i (the number of nodes in the currently tested system) is set to 1. The function will then begin a loop wherein it first creates an array (of length i) of Nodes. Each node in that array, except the first, is initialized with an `infected` value of `false`, representing its infection status, as well as its own personal `bool channel`, which will be used for communication with other nodes. The first node, however, is initialized with an `infected` value of `true`, as well as its own personal `bool channel`. Afterwards, the program executes the instructions specific to the user-chosen Gossip protocol until all the nodes in the system are infected. Once those results are recorded, the loop will be run again with i+1 nodes in a system. This loop is run until the variable i has reached the number of nodes the user chose to test until.
+Once the user inputs the type of Gossip protocol to run, the number of nodes to test until, and whether to print the round results in the terminal, a call to `initiateGossip()` is made. To begin, a variable `i` (the number of nodes in the currently tested system) is set to `1`. The function then begins a loop wherein it first creates an array (of length `i`) of Nodes. Each node in that array, except the first, is initialized with an `infected` value of `false`, representing its infection status, as well as its own personal `bool channel`, which will be used for communication with other nodes. The first node, however, is initialized with an `infected` value of `true`, as well as its own personal `bool channel`. Afterwards, the program executes the instructions specific to the user-chosen Gossip protocol until all the nodes in the system are infected. Once those results are recorded, the loop will be run again with `i+1` nodes in a system. This loop is run until the variable `i` has reached the number of nodes the user chose to test until.
 
 For example, if the user inputs 50 for the number of nodes, the following systems will be tested: a system with 1 node, a system with 2 nodes, a system with 3 nodes,..., a system with 50 nodes.
 
