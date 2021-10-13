@@ -3,7 +3,9 @@ MP1 uses `Go-channels` and `Go-routines` to simulate three major types of Gossip
 These types are push-based Gossip, pull-based Gossip, and push-pull-based Gossip. Two types of push-pull-based gossip are presented, making for a total of four possible Gossip protocol options. 
 
 ## Input and Output
-A user will specify which Gossip protocol they would like to see tested. Additionally, the user will provide a value for the maximum number of nodes in a system to test. Finally, the user will select whether they would like to see the results for each round printed (Y or N). If the user's current directory is writeable, an HTML file will be output. The HTML file will display a plot with the number of nodes tested in a system against the number of rounds it took to infect all the nodes in that system.
+A user will specify which Gossip protocol they would like to see tested. Additionally, the user will provide a value for the maximum number of nodes in a system to test. Finally, the user will select whether they would like to see the results for each round printed (Y or N). 
+
+Depending on the user's answer to the last question, the program will print the results of each infection round. Also, if the user's current directory is writeable, an HTML file will be output. The HTML file will display a plot with the number of nodes tested in a system against the number of rounds it took to infect all the nodes in that system.
 
 ## Specifications of Gossip Protocols
 
