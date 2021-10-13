@@ -64,8 +64,6 @@ func isValidPrinterSetting(printerSetting string) bool {
 func getAnalysis(roundCount int, nodeCount int) {
 	if printResults == "Y" || printResults == "y" {
 		fmt.Println("------------------------------------------------------")
-	}
-	if printResults == "Y" || printResults == "y" {
 		fmt.Printf("Well, it only took %d rounds to finish %d nodes.\n", roundCount, nodeCount)
 	}
 }

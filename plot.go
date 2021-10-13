@@ -10,6 +10,7 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
 
+//IsWritable is a function used to check whether the user's current directory can be written to.
 func IsWritable() (isWritable bool) {
 	ex, errone := os.Executable()
 	if errone != nil {
