@@ -24,7 +24,11 @@ As in the `Push` protocol, each node runs three total `Go-routines` in lockstep.
 `Push/Pull` combines the functions of `Push` and `Pull` protocols, as the name suggests. `PushInfect()` is called first in `Go-routines` for by each node, followed by `PushUpdate()`. Then, `PullUpdate()` and `PullInfect()` are called, completing the round. Each of them are executed in lockstep as in the previous protocols, and the outputs are created in the same manner.  
 
 #### Push/Pull Switch Gossip 
-Push/Pull Switch Gossip will begin the same as the other modes; with the initialization of nodes. Rounds will begin. While the number of susceptible nodes is more than half the number of total nodes, the push Gossip will be implemented. Once the number of susceptible nodes reaches less than half, the pull Gossip will be implemented. The switch is made when around half the number of nodes are susceptible because of the probability of a node being randomly chosen. To acheive a smaller convergence time, the probability of a susceptible node being infected in a round should be higher than not being infected. When the number of susceptible nodes is greater than the number of infected, there is a greater probability that a susceptible node will turn infected. This is because the already infected nodes will have a higher probability of choosing a susceptible node for I(t) (the number of infected nodes at time t) < S(t) (the number of susceptible nodes at time t) and thus S(t)/(I(t) + S(t)) will be greater than I(t)/(I(t) + S(t)). On the other hand, when the number of susceptible nodes is smaller than the number of infected, there is a greater probability that a susceptible node will pull from an infected than an infected node pushing to a susceptible. In other terms, I(t)/(I(t) + S(t)) > S(t)/(I(t)+S(t)). 
+`Push/Pull Switch Gossip` is identical to `Push/Pull`, except that instead of executing both `Push` and `Pull` commands every round, it acknowledges the different phases of a general Gossip protocol, and implements the commands that are optimal to the current phase. More specifically, while the number of susceptible nodes is more than half the number of total nodes, the `Push` protocol is implemented. Conversely, while the number of proportion of susceptible nodes is less than half, the `Pull` protocol is implemented. The logic is outlined by Pittel (1987):
+
+EQUATION
+
+The switch from `Push` to `Pull` is made when around half the number of nodes are susceptible because of the probability of a node being randomly chosen. To acheive a smaller convergence time, the probability of a susceptible node being infected in a round should be higher than not being infected. When the number of susceptible nodes is greater than the number of infected, there is a greater probability that a susceptible node will turn infected. This is because the already infected nodes will have a higher probability of choosing a susceptible node for I(t) (the number of infected nodes at time t) < S(t) (the number of susceptible nodes at time t) and thus S(t)/(I(t) + S(t)) will be greater than I(t)/(I(t) + S(t)). On the other hand, when the number of susceptible nodes is smaller than the number of infected, there is a greater probability that a susceptible node will pull from an infected than an infected node pushing to a susceptible. In other terms, I(t)/(I(t) + S(t)) > S(t)/(I(t)+S(t)). 
 
 ## How to Run
 
@@ -79,15 +83,15 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 
 #### Push Gossip Overview
 
-<img src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" width="100%" height="100%" />
+<img src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713597-1a680e8b-d028-4d11-8717-ea2ae3538882.png" width="50%" height="50%" />
 
 #### Pull Gossip Overview
 
-<img src="https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png" width="100%" height="100%" />
+<img src="https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713589-4a5952c5-0a8b-4a84-99d4-5eabadfb3568.png" width="50%" height="50%" />
 
 #### Push-Pull Gossip Overview
 
-<img src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" width="100%" height="100%" />
+<img src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" width="50%" height="50%" />
 
 ## Custom Data Structures
 Node Struct in ```Go ```
