@@ -95,8 +95,7 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 
 ## Custom Data Structures
 Node Struct
-```
-Go
+```go
 type Node struct {
   infected bool
   channel *chan bool
