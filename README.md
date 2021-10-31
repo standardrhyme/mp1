@@ -94,8 +94,9 @@ C) Lastly, enter whether you wish to print out in your terminal the infection re
 <img src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" data-canonical-src="https://user-images.githubusercontent.com/60116121/136713592-ef8767b3-e920-4b83-9a14-218b43423169.png" width="75%" height="75%" />
 
 ## Custom Data Structures
-Node Struct in ```Go ```
+Node Struct
 ```
+Go
 type Node struct {
   infected bool
   channel *chan bool
